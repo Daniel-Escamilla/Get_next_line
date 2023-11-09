@@ -1,1 +1,1 @@
-Este es un archivo de \n Prueba para ver cómo funciona read, buffer y en general todo. Con un buffer de 10.
+Esta es una pruba con 3 buffers y\n el salto de linea\n

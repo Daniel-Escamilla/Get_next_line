@@ -6,16 +6,13 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 16:00:27 by descamil          #+#    #+#             */
-/*   Updated: 2023/11/08 17:40:58 by descamil         ###   ########.fr       */
+/*   Updated: 2023/11/09 13:17:05 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void    ft_putchar(char c)
-{
-    write(1, &c, 1);
-}
+
 int	ft_strlen(const char *s)
 {
 	int	i;
@@ -24,6 +21,19 @@ int	ft_strlen(const char *s)
 	while (s[i] != '\0')
 		i++;
 	return (i);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s != '\0')
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if (*s == (char)c)
+		return ((char *)s);
+	return (NULL);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -93,18 +103,22 @@ int ft_read_buffer(int fd, char *buffer, int size)
 char    *get_next_line(int fd)
 {
     static char buffer[BUFFER_SIZE];
+    static char *tmp;
     static int  index;
+    static int  x;
     char        *str;
     char        *old_str;
-    char        *tmp;
     int         bytesRead;
     int         num_to_cpy;
     int         i;
+    int         j;
 
     index = 0;
+    x = 0;
     str = NULL;
     while (1)
     {
+//        printf("Tmp = %s\n\n", tmp);
         if (index == 0)
         {
             bytesRead = ft_read_buffer(fd, buffer, BUFFER_SIZE);
@@ -116,9 +130,14 @@ char    *get_next_line(int fd)
             }
         }
         i = index;
-        while (i < BUFFER_SIZE && buffer[i] != '\n')
+        while (i < BUFFER_SIZE)
+        {
+            if (buffer[i] == '\\' && buffer[i + 1] == 'n')
+                break;
             i++;
+        }
         num_to_cpy = i - index;
+        // printf("Buffer: %s\n", buffer);
         tmp = malloc(num_to_cpy + 1);
         if (tmp == NULL)
         {
@@ -131,20 +150,36 @@ char    *get_next_line(int fd)
         {
             old_str = str;
             str = ft_strjoin(old_str, tmp);
+            // printf("tmp: %s\n", str);
+            // printf("old: %s\n", str);
             free (old_str);
             free (tmp);
         }
         else
             str = tmp;
         index = i;
-        if (i < BUFFER_SIZE && buffer[i] == '\n')
+        // printf("I = %d\n", i);
+        if (i < BUFFER_SIZE && ft_strchr(buffer, '\n') == NULL)
         {
-            index++;
-            return (str);
+            index = 0;
+            str[x * 10 + i] = '\n';
+            j = 0;
+            i += 2;
+            while (i < BUFFER_SIZE)
+            {
+                tmp[j] = buffer[i];
+                i++;
+                j++;
+            }
+            tmp[j] = '\0';
+            break;
         }
         if (i == BUFFER_SIZE)
             index = 0;
+        x++;
     }
+//    printf("TMP = %s\n", tmp);
+    return (str);
 }
 
 int main()
@@ -155,65 +190,14 @@ int main()
 
     if (fd == -1)
         return (1);
-    i = 1;
+    i = 2;
     while (i > 0)
     {
         line = get_next_line(fd);
-        if (line == NULL)
-        {
-            close (fd);
-            return (1);
-        }
-        printf("%s\n", line);
+        printf("%s", line);
         free(line);
         i--;
     }
     close(fd);
     return (0);
 }
-/* 
-    static char buffer[BUFFER_SIZE];
-    static  int index;
-    char        *str;
-    int         i;
-    int         bytesRead;
-    int         j;
-    int         k;
-
-    index = 0;
-    str = NULL;
-    
-    if (index == 0)
-        bytesRead = ft_read_buffer(fd, buffer, BUFFER_SIZE);
-    i = index;
-    while (i < bytesRead)
-    {
-        if (buffer[i] == '\\' && buffer[i + 1] == 'n')
-        {
-            str = (char *)malloc(i - index + 2);
-            if (str == NULL)
-                exit(1);
-            j = 0;
-            k = 0;
-            while (k <= i)
-            {
-                str[j] = buffer[k];
-                k++;
-                j++;
-                //printf("%s\n", str);
-            }
-            str[j] = '\n';
-            str[j + 1] = '\0';
-            return (str);
-        }
-        i++;
-        index += 1;
-        printf("%d\n", index);
-    }
-    if (i == bytesRead)
-    {
-        index = 0;
-        return (get_next_line(fd));
-    }
-    return (NULL);
-*/
