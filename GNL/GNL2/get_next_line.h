@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:35:10 by descamil          #+#    #+#             */
-/*   Updated: 2023/11/14 18:32:29 by descamil         ###   ########.fr       */
+/*   Updated: 2023/11/18 18:40:46 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 2
 # endif
 
 char	*get_next_line(int fd);
 int		ft_strlen(const char *s);
-char	*ft_strchr(const char *s, int c);
+int		ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strlcpy(char *dest, const char *src, int len_dest);
 

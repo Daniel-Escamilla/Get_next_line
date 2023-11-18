@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 19:01:13 by descamil          #+#    #+#             */
-/*   Updated: 2023/11/14 19:01:14 by descamil         ###   ########.fr       */
+/*   Updated: 2023/11/18 12:27:34 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,29 @@ int	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strchr(const char *s, int c)
+int	ft_strchr(const char *s, int c)
 {
 	while (*s != '\0')
 	{
-		if (*s == (char)c)
-			return ((char *)s);
+		if (*s == (char)c || *(s + 1) == (char)c)
+			return (1);
 		s++;
 	}
-	if (*s == (char)c)
-		return ((char *)s);
-	return (NULL);
+	return (0);
 }
+
+// char	*ft_strchr(const char *s, int c)
+// {
+// 	while (*s != '\0')
+// 	{
+// 		if (*s == (char)c)
+// 			return ((char *)s);
+// 		s++;
+// 	}
+// 	if (*s == (char)c)
+// 		return ((char *)s);
+// 	return (NULL);
+// }
 
 int	ft_strlcpy(char *dest, const char *src, int len_dest)
 {
