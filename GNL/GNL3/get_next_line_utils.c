@@ -54,7 +54,6 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	return (ptr);
 }
 
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		size_total;
@@ -67,7 +66,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 && !s2)
 		return (NULL);
 	size_total = ft_strlen((char *)s1) + ft_strlen((char *)s2);
-	ptr = (char * )malloc(size_total + 1);
+	ptr = (char *)ft_calloc(sizeof(char), size_total + 1);
 	if (ptr == NULL)
 		return (NULL);
 	while ((char *)s1 && (char)s1[i] != '\0')

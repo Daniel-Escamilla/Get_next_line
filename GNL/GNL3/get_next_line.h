@@ -20,14 +20,13 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 9
 # endif
 
 char	*get_next_line(int fd);
 int		ft_strlen(const char *s);
-int     ft_strchr(const char *s, char c);
+int		ft_strchr(const char *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
-char    *ft_clean_buffer(char *buffer);
 void	*ft_calloc(size_t nmemb, size_t size);
 
 #endif

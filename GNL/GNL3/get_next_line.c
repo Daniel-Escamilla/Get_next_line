@@ -17,7 +17,8 @@ char	*ft_buffer_move(char *buffer, int i, int j, char *tmp)
 	if ((ft_strchr(buffer, '\n') == 1 || ft_strchr(buffer, '\0') == 1)
 		&& i < ft_strlen(buffer))
 	{
-		while ((buffer[i] != '\0' && buffer[i] != '\n') && i < ft_strlen(buffer))
+		while ((buffer[i] != '\0' && buffer[i] != '\n')
+			&& i < ft_strlen(buffer))
 		{
 			tmp[i] = buffer[i];
 			i++;
@@ -30,8 +31,6 @@ char	*ft_buffer_move(char *buffer, int i, int j, char *tmp)
 		buffer[j++] = buffer[i++];
 	while (j < i)
 		buffer[j++] = '\0';
-	// if (buffer[0] == '\0')
-	// 	free(buffer);
 	return (buffer);
 }
 
@@ -39,7 +38,7 @@ char	*ft_read(int fd, char *buffer)
 {
 	int	bytes_read;
 
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	buffer = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (buffer == NULL)
 	{
 		free (buffer);
@@ -73,8 +72,11 @@ char	*ft_buffer_extract(char *buffer, char *line)
 	tmp = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	buffer = ft_buffer_move(buffer, 0, 0, tmp);
 	line = ft_strjoin(line, tmp);
-	if (buffer[0] == '\0')
-		buffer = NULL;
+	if (buffer)
+	{
+		if (buffer[0] == '\0')
+			buffer = NULL;
+	}
 	free (tmp);
 	tmp = NULL;
 	return (line);
@@ -91,12 +93,16 @@ char	*ft_first_line(char *buffer, int fd)
 	{
 		if (ft_strchr(buffer, '\n') == 1)
 			break ;
-		else if ((ft_strlen(buffer) < BUFFER_SIZE && ft_strchr(buffer, '\n') == 0) || BUFFER_SIZE == 1 || i == 2)
+		else if ((ft_strlen(buffer) < BUFFER_SIZE
+				&& ft_strchr(buffer, '\n') == 0) || BUFFER_SIZE == 1 || i == 1)
 		{
 			i = 0;
 			line = ft_strjoin(line, buffer);
-			free(buffer);
-			buffer = NULL;
+			if (buffer != NULL)
+			{
+				free(buffer);
+				buffer = NULL;
+			}
 			buffer = ft_read(fd, buffer);
 			if (buffer == NULL)
 			{
@@ -104,15 +110,19 @@ char	*ft_first_line(char *buffer, int fd)
 				break ;
 			}
 		}
-		if ((ft_strlen(buffer) < BUFFER_SIZE && (ft_strchr(buffer, '\n') == 0)))
+		if ((ft_strlen(buffer) < BUFFER_SIZE
+				&& (ft_strchr(buffer, '\n') == 0)))
 			break ;
 		i++;
 	}
 	line = ft_buffer_extract(buffer, line);
-	if (buffer != NULL && buffer[0] == '\0')
+	if (buffer)
 	{
-		free(buffer);
-		buffer = NULL;
+		if (buffer[0] == '\0')
+		{
+			free(buffer);
+			buffer = NULL;
+		}
 	}
 	return (line);
 }
@@ -129,7 +139,7 @@ char	*get_next_line(int fd)
 	line = NULL;
 	if (buffer)
 	{
-		if (buffer[i] == '\0')
+		if (buffer[0] == '\0' || BUFFER_SIZE == 1)
 			buffer = NULL;
 	}
 	if (!buffer)
@@ -146,8 +156,8 @@ char	*get_next_line(int fd)
 	if (line == NULL)
 	{	
 		free(line);
-		line = NULL;
-		buffer = NULL;	
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
 	}
 	return (line);
@@ -159,24 +169,24 @@ char	*get_next_line(int fd)
 //    system("leaks a.out");
 // }
 
-// int main()
-// {
-// 	int		fd;
-// 	char	*line;
-// 	int		i;
+int main()
+{
+	int		fd;
+	char	*line;
+	int		i;
 
-// 	i = 2;
-// 	fd = open("1char.txt", O_RDONLY);
-// 	if (fd == -1)
-// 		return (1);
-// 	while (i > 0)
-// 	{
-// 		line = (get_next_line(fd));
-// 		printf("%s",line);
-// 		free(line);
-// 		i--;
-// 	}
-// 	// atexit(runleaks);
-// 	close (fd);
-// 	return (0);
-// }
+	i = 2;
+	fd = open("lines_around_10.txt", O_RDONLY);
+	if (fd == -1)
+		return (1);
+	while (i > 0)
+	{
+		line = (get_next_line(fd));
+		printf("%s",line);
+		free(line);
+		i--;
+	}
+	// atexit(runleaks);
+	close (fd);
+	return (0);
+}
