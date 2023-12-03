@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Esquema.c                                          :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 12:46:44 by descamil          #+#    #+#             */
-/*   Updated: 2023/11/27 17:27:54 by descamil         ###   ########.fr       */
+/*   Updated: 2023/12/03 13:18:12 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,27 +82,15 @@ char	*ft_buffer_extract(char *buffer, char *line)
 	return (line);
 }
 
-char	*ft_first_line(char *buffer, int fd)
+char	*ft_first_line(char *buffer, int fd, int i)
 {
 	char	*line;
-	int		i;
 
 	line = NULL;
-	i = 0;
 	while (1)
 	{
-		if (ft_strchr(buffer, '\n') == 1)
-			break ;
-		else if ((ft_strlen(buffer) < BUFFER_SIZE
-				&& ft_strchr(buffer, '\n') == 0) || BUFFER_SIZE == 1 || i == 1)
+		if (!buffer)
 		{
-			i = 0;
-			line = ft_strjoin(line, buffer);
-			if (buffer != NULL)
-			{
-				free(buffer);
-				buffer = NULL;
-			}
 			buffer = ft_read(fd, buffer);
 			if (buffer == NULL)
 			{
@@ -110,10 +98,24 @@ char	*ft_first_line(char *buffer, int fd)
 				break ;
 			}
 		}
-		if ((ft_strlen(buffer) < BUFFER_SIZE
-				&& (ft_strchr(buffer, '\n') == 0)))
+		if (ft_strchr(buffer, '\n') == 1)
 			break ;
-		i++;
+		else if (ft_strchr(buffer, '\n') == 0 && ft_strlen(buffer) < BUFFER_SIZE && i == 0)
+			break ;
+		else
+		{
+			line = ft_strjoin(line, buffer);
+			if (buffer != NULL)
+			{
+				free(buffer);
+				buffer = NULL;
+			}
+		}
+	}
+	if (!buffer)
+	{
+		free(buffer);
+		return (line);
 	}
 	line = ft_buffer_extract(buffer, line);
 	if (buffer)
@@ -131,11 +133,7 @@ char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
-	int			i;
-	int			j;
 
-	i = 0;
-	j = 0;
 	line = NULL;
 	if (buffer)
 	{
@@ -147,46 +145,47 @@ char	*get_next_line(int fd)
 		buffer = ft_read(fd, buffer);
 		if (buffer == NULL)
 			return (NULL);
-		line = ft_first_line(buffer, fd);
+		line = ft_first_line(buffer, fd, 0);
 	}
 	else
-		line = ft_first_line(buffer, fd);
-	if (buffer == NULL)
-		return (line);
+		line = ft_first_line(buffer, fd, 1);
 	if (line == NULL)
-	{	
+	{
 		free(line);
 		free(buffer);
 		buffer = NULL;
 		return (NULL);
 	}
+	if (buffer && ft_strchr(line, '\n') == 0)
+	{
+		buffer = NULL;
+		return (line);
+	}
 	return (line);
 }
-
 
 // void runleaks(void)
 // {
 //    system("leaks a.out");
 // }
+// int main()
+// {
+// 	int		fd;
+// 	char	*line;
+// 	int		i;
 
-int main()
-{
-	int		fd;
-	char	*line;
-	int		i;
-
-	i = 2;
-	fd = open("lines_around_10.txt", O_RDONLY);
-	if (fd == -1)
-		return (1);
-	while (i > 0)
-	{
-		line = (get_next_line(fd));
-		printf("%s",line);
-		free(line);
-		i--;
-	}
-	// atexit(runleaks);
-	close (fd);
-	return (0);
-}
+// 	i = 4;
+// 	fd = open("multiple_line_no_nl", O_RDONLY);
+// 	if (fd == -1)
+// 		return (1);
+// 	while (i > 0)
+// 	{
+// 		line = (get_next_line(fd));
+// 		printf("%s",line);
+// 		free(line);
+// 		i--;
+// 	}
+// 	// atexit(runleaks);
+// 	close (fd);
+// 	return (0);
+// }
