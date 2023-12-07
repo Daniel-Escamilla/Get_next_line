@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 19:01:13 by descamil          #+#    #+#             */
-/*   Updated: 2023/12/05 19:37:40 by descamil         ###   ########.fr       */
+/*   Updated: 2023/12/07 12:34:38 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,11 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	total_size = nmemb * size;
 	ptr = malloc(total_size);
 	if (ptr == NULL)
-	{
-		free(ptr);
 		return (NULL);
-	}
 	i = 0;
 	ptr_chr = (char *)ptr;
 	while (i < total_size)
-	{
-		ptr_chr[i] = '\0';
-		i++;
-	}
+		ptr_chr[i++] = '\0';
 	return (ptr);
 }
 
