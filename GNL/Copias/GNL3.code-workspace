@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../GNL3"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"copia-utils-entera": "c",
+			"get_next_line.h": "c"
+		}
+	}
+}

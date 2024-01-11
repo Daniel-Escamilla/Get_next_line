@@ -1,0 +1,120 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Copia-Utils-Entera                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/14 19:01:13 by descamil          #+#    #+#             */
+/*   Updated: 2023/11/27 17:01:10 by descamil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+int	ft_strlen(const char *s)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+int	ft_strchr(const char *s, int c)
+{
+	while (*s != '\0')
+	{
+		if (*s == (char)c || *(s + 1) == (char)c)
+			return (1);
+		s++;
+	}
+	return (0);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	char	*s1;
+	size_t	i;
+
+	s1 = (char *)s;
+	i = ft_strlen(s1);
+	while (n < 0)
+	{
+		s1[i] = '\0';
+		i--;
+		n--;
+	}
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*ptr;
+	size_t	i;
+	size_t	total_size;
+	char	*ptr_chr;
+
+	if ((nmemb == SIZE_MAX) || (size == SIZE_MAX))
+		return (NULL);
+	total_size = nmemb * size;
+	ptr = malloc(total_size);
+	if (ptr == NULL)
+		return (NULL);
+	i = 0;
+	ptr_chr = (char *)ptr;
+	while (i < total_size)
+	{
+		ptr_chr[i] = 0;
+		i++;
+	}
+	return (ptr);
+}
+
+char	*ft_memcpy(char *dst, char *src, int num)
+{
+	int			i;
+
+	if (src == NULL && dst == NULL)
+		return (NULL);
+	dst = (char *)malloc(num);
+	if (dst == NULL)
+		return (NULL);
+	i = 0;
+	while (i < num)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	return (dst);
+} 
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	int		n;
+	char	*ptr;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	n = ft_strlen((char *)s1) + ft_strlen((char *)s2);
+	ptr = malloc(n + 1);
+	if (ptr == NULL)
+		return (NULL);
+	while ((char *)s1 && (char)s1[i] != '\0')
+	{	
+		ptr[i] = (char)s1[i];
+		i++;
+	}
+	while ((char *)s2 && (char)s2[j] != '\0')
+	{
+		ptr[i] = (char)s2[j];
+		i++;
+		j++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
+}
