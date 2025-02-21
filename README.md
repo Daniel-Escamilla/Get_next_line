@@ -6,6 +6,8 @@ Get Next Line una función en C que permite leer un archivo línea por línea a 
 
 ```sh
 git clone https://github.com/Daniel-Escamilla/Get_next_line.git
+```
+```sh
 cd Get_next_line
 ```
 
