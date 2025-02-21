@@ -9,7 +9,7 @@ git clone https://github.com/Daniel-Escamilla/Get_next_line.git
 cd Get_next_line
 ```
 
-## ⚙️ Uso de la función
+## 🚀 Uso de la función
 
 ### 📌 Ejemplo de uso:
 
@@ -37,13 +37,13 @@ int	main(void)
 	return (0);
 }
 ```
-### 🚀 Compilación 
+## ⚙️ Compilación 
 
 ```sh
 gcc main.c get_next_line.c get_next_line_utils.c -o programa
 ```
 
-### 📌 Notas importantes
+## 📌 Notas importantes
 
 - La función puede leer tanto archivos como `stdin`.
 - Cada línea devuelta finaliza en `\n`, salvo la última si el archivo no termina en un salto de línea.
