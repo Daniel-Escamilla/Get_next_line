@@ -6,10 +6,13 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 14:40:35 by descamil          #+#    #+#             */
-/*   Updated: 2024/06/27 15:51:02 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/21 19:03:05 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
+#include <stdio.h>
+#include "get_next_line.h"
 #include "get_next_line.h"
 
 char	*read_l(int fd, char *buffer)
