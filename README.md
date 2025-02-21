@@ -12,14 +12,6 @@ cd Get_next_line
 
 ## ⚙️ Uso de la función
 
-### 📌 Prototipo:
-```c
-char *get_next_line(int fd);
-```
-
-- `fd` → File descriptor desde el que se leerá la línea.
-- Retorna la siguiente línea del archivo, o `NULL` si ha terminado la lectura o ha ocurrido un error.
-
 ### 📌 Ejemplo de uso:
 
 Archivo `main.c`: 
