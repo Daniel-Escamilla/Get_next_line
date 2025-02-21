@@ -3,8 +3,7 @@
 Get Next Line una función en C que permite leer un archivo línea por línea a través de un file descriptor. Su implementación gestiona correctamente la memoria y permite leer tanto archivos como la entrada estándar.
 
 ## 📥 Clonación del repositorio
- 
-Para obtener una copia local del proyecto, usa:
+
 ```sh
 git clone https://github.com/Daniel-Escamilla/Get_next_line.git
 cd Get_next_line
@@ -14,7 +13,6 @@ cd Get_next_line
 
 ### 📌 Ejemplo de uso:
 
-Archivo `main.c`: 
 ```c
 #include <fcntl.h>
 #include <stdio.h>
@@ -39,13 +37,14 @@ int	main(void)
 	return (0);
 }
 ```
- ### 🚀 Compilación 
-  Para compilar un programa que use `get_next_line`, ejecuta:
+### 🚀 Compilación 
+
 ```sh
 gcc main.c get_next_line.c get_next_line_utils.c -o programa
 ```
-Donde `main.c` es el archivo de prueba. 
+
 ### 📌 Notas importantes
+
 - La función puede leer tanto archivos como `stdin`.
 - Cada línea devuelta finaliza en `\n`, salvo la última si el archivo no termina en un salto de línea.
 - Internamente usa `read`, `malloc` y `free` para la gestión de memoria.
